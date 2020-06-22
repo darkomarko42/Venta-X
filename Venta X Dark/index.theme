@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=X-GNOME-Metatheme
+Name=Venta X Dark
+Comment=GTK Theme
+Encoding=UTF-8
+
+[X-GNOME-Metatheme]
+GtkTheme=Venta X Dark
+MetacityTheme=Venta X Dark
+IconTheme=Marwaita-Light
+CursorTheme=Marwaita-Light
+CursorSize=24
