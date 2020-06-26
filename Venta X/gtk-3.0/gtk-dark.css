@@ -317,9 +317,7 @@ button:disabled:active label, button:disabled:active, button:disabled:checked la
   color: @insensitive_fg_color;
 }
 
-button separator {
-
-}
+button separator.vertical {border-right: 1px solid @highlight;}
 
 /* FLAT BUTTONS */
 
@@ -601,7 +599,7 @@ colorswatch.light overlay:hover {
 }
 
 colorswatch overlay {
-  border: 1px solid alpha(black, 0.15);
+  border: 1px solid alpha(@fg_color, 0.2);
 }
 
 colorswatch overlay:hover {
@@ -613,15 +611,13 @@ colorswatch:disabled {
 }
 
 colorswatch:disabled overlay {
-  border-color: alpha(black, 0.6);
+  border-color: alpha(@fg_color, 0.1);
   box-shadow: none;
 }
 
 colorswatch#add-color-button {
-  border-style: solid;
-  border-width: 1px;
   color: @selected_fg_color;
-  border-color: @borders_t;
+  box-shadow: inset  0 0 0 1px alpha(@fg_color, 0.2);
   background-image: linear-gradient(to right, red 25%, orange 25%, orange 50%, green 50%, green 75%, blue 75%);
 }
 
@@ -632,7 +628,7 @@ colorswatch#add-color-button overlay {
 }
 
 button.color {
-  padding: 0;
+  padding: 2px;
 }
 
 button.color colorswatch:first-child:last-child, button.color colorswatch:first-child:last-child overlay {
@@ -769,7 +765,7 @@ modelbutton.flat arrow.right {
 }
 
 *:link:hover, button:hover:link, button:hover:visited {
-  color: @selected_bg_color;
+  color: shade(@selected_bg_color,1.4);
 }
 
 *:selected *:link:hover, *:selected button:hover:link, *:selected button:hover:visited {
@@ -875,6 +871,21 @@ combobox arrow {
   min-height: 16px;
   min-width: 16px;
 }
+
+combobox button:last-child:not(:only-child) {
+box-shadow: none;
+background-color: transparent;
+margin-left: -25px;
+border: none;
+}
+
+combobox button:last-child:not(:only-child):checked{background-color: @button;}
+
+combobox entry:first-child{margin-right: -2px;}
+
+combobox .linked:not(.vertical) > entry:first-child{border-radius: 3px; border-style: solid;}
+
+combobox .linked:not(.vertical):not(.path-bar) > entry:focus:not(:only-child) + button{box-shadow: none;}
 
 /************
  * Toolbars *
@@ -997,15 +1008,17 @@ messagedialog.csd decoration {
 
 .titlebar .stack-switcher button{font-weight: bold; border-radius: 0;}
 
-.titlebar .stack-switcher button:checked{box-shadow: inset 0 -2px @selected_bg_color;}
+.titlebar .stack-switcher button:checked{box-shadow: inset 0 -2px @selected_bg_color; }
 
 .titlebar button.suggested-action{ color: @suggested_color; background-color: transparent; font-weight: bold;}
 .titlebar button.suggested-action:hover{ background-color: alpha(@fg_color,0.1);}
 .titlebar button.suggested-action:active,.titlebar button.suggested-action:checked{ background-color: alpha(@fg_color,0.2);}
+.titlebar button.suggested-action:disabled,.titlebar button.suggested-action:backdrop{ color: alpha(@suggested_color,0.5);}
 
 .titlebar button.destructive-action{ color: @error_color; background-color: transparent; font-weight: bold;}
 .titlebar button.destructive-action:hover{ background-color: alpha(@fg_color,0.1);}
 .titlebar button.destructive-action:active,.titlebar button.destructive-action:checked{ background-color: alpha(@fg_color,0.2);}
+.titlebar button.destructive-action:disabled,.titlebar button.destructive-action:backdrop{ color: alpha(@error_color,0.5);}
 
 headerbar,
 .titlebar:not(headerbar) {
@@ -1222,6 +1235,7 @@ treeview.view header button {
   border-style: none solid solid none;
   border-radius: 0;
   box-shadow: none;
+  border-width: 1px;
 }
 
 treeview.view header button:last-child {
@@ -1494,10 +1508,11 @@ notebook tab:checked {
     border-style: none;
     box-shadow: none;
     color: @text_color;
+    transition: all 500ms cubic-bezier(0.7 , 0 , 1 , 0.5);
 }
 
 notebook > header.top > tabs > tab:checked {
-box-shadow:  inset 0 -2px @selected_bg_color;
+box-shadow:  inset 0 -2px @selected_bg_color; 
 }
 notebook > header.bottom > tabs > tab:checked {  
 box-shadow:  inset 0 2px @selected_bg_color;
@@ -1535,7 +1550,6 @@ notebook tab > entry {
 notebook tab label {
     color: @insensitive_fg_color;
     padding: 3px 6px;
-  transition: all 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
     font-weight: bold;
 }
 
@@ -1660,7 +1674,7 @@ switch:disabled slider {
  * Check and Radio items *
  *************************/
 
-check,radio{margin-right: 4px; transition: all 200ms cubic-bezier(0.7 , 0 , 1 , 0.5);}
+check,radio{margin-right: 4px; transition: all 200ms cubic-bezier(0.7 , 0 , 1 , 0.5); padding: 1px;}
 
 checkbutton.text-button,
 radiobutton.text-button {
@@ -1680,9 +1694,8 @@ radio {
   background-clip: border-box;
   min-height: 14px;
   min-width: 14px;
-  border: 1px solid @borders;
-  box-shadow: inset 0 0 0 1px @borders;
-  background-color: @base_color;
+  box-shadow: inset 0 0 0 2px @fg_color;
+  background-color: transparent;
   -gtk-icon-shadow: none;
 }
 
@@ -1702,7 +1715,7 @@ radio:indeterminate:disabled,check:disabled , radio:disabled {
   background-color: transparent;
   -gtk-icon-shadow: none;
   border-color: @borders;
-  box-shadow: inset 0 0 0 1px @borders;
+  box-shadow: inset 0 0 0 2px @insensitive_fg_color;
 }
 
 menu menuitem check, menu menuitem
@@ -2418,14 +2431,7 @@ popover.emoji-picker {
   padding: 0;
 }
 
-popover.emoji-picker entry {
-  border-bottom: 1px solid @borders;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-  box-shadow: none;
-  border-width: 0 0 1px 0;
-  padding: 4px 12px;
-}
+popover.emoji-picker entry { margin: 4px;}
 
 popover.emoji-picker scrolledwindow {
   border-bottom: 1px solid @borders;
@@ -3443,6 +3449,7 @@ frame.raven-frame > border {border: none;}
 calendar.raven-calendar {border-style: solid none;}
 
 .raven-mpris {background-color: alpha(black,0.6); color: @selected_fg_color} .raven-mpris button{ color: @selected_fg_color;}
+.raven-mpris button:disabled{color:alpha(@selected_fg_color,0.5);}
 
 .raven .powerstrip{box-shadow: inset 0 1px @borders_t;}
 .raven .powerstrip button{padding: 8px;}
